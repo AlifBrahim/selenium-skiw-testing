@@ -1,21 +1,31 @@
 from selenium import webdriver
 import time
 
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
-
 # Initialize the Chrome WebDriver
 driver = webdriver.Chrome()
 
 # Define test data
 test_cases = [
-    {"id": "TC_SIGN_UP_001", "username": "alifibrahim", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "login.php"},
-    {"id": "TC_SIGN_UP_002", "username": "&*(*^&^)", "firstname": "Muhammad", "lastname": "Alif", "email": "alif2@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
-    {"id": "TC_SIGN_UP_003", "username": "alif ibrahim", "firstname": "Muhammad", "lastname": "Alif", "email": "alif3@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
-    {"id": "TC_SIGN_UP_004", "username": " ", "firstname": "Muhammad", "lastname": "Alif", "email": "alif4@gmail.com", "phone": "1384728440", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
-    {"id": "TC_SIGN_UP_005", "username": "alifibrahims", "firstname": "Mu7amad", "lastname": "Alif", "email": "alif5@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
-    {"id": "TC_SIGN_UP_006", "username": "alifibrahimz", "firstname": "&*(*^&^)", "lastname": "Alif", "email": "alif6@gmail.com", "phone": "1384728440", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
-    # Add more test cases here...
+    {"id": "TC_SIGN_UP_001", "username": "alifibrahizmm1", "firstname": "Muhammad", "lastname": "Alif", "email": "alif2341@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "login.php"},
+    {"id": "TC_SIGN_UP_002", "username": "&*(*^&^1", "firstname": "Muhammad", "lastname": "Alif", "email": "alif2111@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_003", "username": "alif ibrahim1", "firstname": "Muhammad", "lastname": "Alif", "email": "alif34551@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_004", "username": " 1", "firstname": "Muhammad", "lastname": "Alif", "email": "alif444441@gmail.com", "phone": "1384728440", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_005", "username": "alifibrahimas1", "firstname": "Mu7amad", "lastname": "Alif", "email": "alif554331@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_006", "username": "alifibrahixxmz1", "firstname": "&*(*^&^1", "lastname": "Alif", "email": "alif64321@gmail.com", "phone": "1384728440", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_007", "username": "alifibrahim1", "firstname": "123", "lastname": "Alif", "email": "alif65431@gmail.com", "phone": "1384728439", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_008", "username": "alifibrahim2", "firstname": " ", "lastname": "Alif", "email": "alif56431@gmail.com", "phone": "1384728441", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_009", "username": "alifibrahim3", "firstname": "Muhammad", "lastname": "abc123", "email": "alif77651@gmail.com", "phone": "1384728442", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_010", "username": "alifibrahim4", "firstname": "Muhammad", "lastname": "&^*(&&(*^(", "email": "alif98431@gmail.com", "phone": "1384728443", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_011", "username": "alifibrahim5", "firstname": "Muhammad", "lastname": "123", "email": "alif23431@gmail.com", "phone": "1384728444", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_012", "username": "alifibrahim6", "firstname": "Muhammad", "lastname": " ", "email": "alif43431@gmail.com", "phone": "1384728445", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_013", "username": "alifibrahim7", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail1", "phone": "1384728446", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_014", "username": "alifibrahim8", "firstname": "Muhammad", "lastname": "Alif", "email": "alifgmail.com1", "phone": "1384728447", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_015", "username": "alifibrahim9", "firstname": "Muhammad", "lastname": "Alif", "email": "alif @gmail.com1", "phone": "1384728448", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_016", "username": "alifibrahim10", "firstname": "Muhammad", "lastname": "Alif", "email": "1231", "phone": "1384728449", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_017", "username": "alifibrahim11", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail.com1", "phone": "abc1", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_018", "username": "alifibrahim12", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail.com2", "phone": "abc1231", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_019", "username": "alifibrahim13", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail.com3", "phone": "&^*(&&(*^(1", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
+    {"id": "TC_SIGN_UP_020", "username": "alifibrahim14", "firstname": "Muhammad", "lastname": "Alif", "email": "alif@gmail.com4", "phone": " 1", "password": "alif1234", "cpassword": "alif1234", "address": "No.11, Sisiran Sintok", "expected_result": "registration.php"},
 ]
 
 # Iterate over test cases
@@ -47,7 +57,8 @@ for i, test_case in enumerate(test_cases):
         else:
             print(f"Test case {test_case['id']}: FAIL")
     except Exception as e:
-        print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+        error_message = str(e).split("\n")[0]
+        print(f"Test case {test_case['id']}: FAIL - Error: {error_message}")
 
 # Close the driver
 driver.quit()

@@ -112,15 +112,24 @@ for test_case in test_cases:
 
     # Wait for the result message to appear
     try:
-        success_message = WebDriverWait(driver, 10).until(
+        alert = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'alert')]"))
         )
-        if test_case["expected_result"] in success_message.text:
-            print(f"Test case {test_case['id']}: PASS")
+
+        alert_text = alert.text
+        if test_case["expected_result"] == "New Dish Added Successfully":
+            if "New Dish Added Successfully." in alert_text:
+                print(f"Test case {test_case['id']}: PASS")
+            else:
+                print(f"Test case {test_case['id']}: FAIL - Success message not found")
         else:
-            print(f"Test case {test_case['id']}: FAIL - Unexpected success message")
+            if "All fields Must be Fillup!" in alert_text or "Max Image Size is 1024kb!" in alert_text or "select image" in alert_text or "invalid extension!" in alert_text:
+                print(f"Test case {test_case['id']}: PASS")
+            else:
+                print(f"Test case {test_case['id']}: FAIL - Error message not found")
     except Exception as e:
-        print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+        error_message = str(e).split("\n")[0]
+        print(f"Test case {test_case['id']}: FAIL - Error: {error_message}")
 
 # Close the driver
 driver.quit()

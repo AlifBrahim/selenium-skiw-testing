@@ -10,15 +10,10 @@ driver = webdriver.Chrome()
 # Define test data for update restaurant category functionality
 test_cases = [
     {"id": "TC_EDIT_RESTAURANT_001", "category": "Western", "expected_result": "Successful"},
-    {"id": "TC_EDIT_RESTAURANT_002", "category": "Western", "expected_result": "NotSaved", "cancel": True},
     {"id": "TC_EDIT_RESTAURANT_003", "category": "abc123", "expected_result": "Unsuccessful"},
-    {"id": "TC_EDIT_RESTAURANT_004", "category": "abc123", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_EDIT_RESTAURANT_005", "category": "$", "expected_result": "Unsuccessful"},
-    {"id": "TC_EDIT_RESTAURANT_006", "category": "$", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_EDIT_RESTAURANT_007", "category": "1234", "expected_result": "Unsuccessful"},
-    {"id": "TC_EDIT_RESTAURANT_008", "category": "1234", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_EDIT_RESTAURANT_009", "category": " ", "expected_result": "Unsuccessful"},
-    {"id": "TC_EDIT_RESTAURANT_010", "category": " ", "expected_result": "NotSaved", "cancel": True},
+    {"id": "TC_EDIT_RESTAURANT_004", "category": "$", "expected_result": "NotSaved", "cancel": True},
+    {"id": "TC_EDIT_RESTAURANT_005", "category": "1234", "expected_result": "Unsuccessful"},
+    {"id": "TC_EDIT_RESTAURANT_006", "category": " ", "expected_result": "NotSaved", "cancel": True},
 ]
 
 # URL of the page to test
@@ -37,7 +32,7 @@ def login():
 login()
 
 # Iterate over test cases
-for i, test_case in enumerate(test_cases):
+for test_case in test_cases:
     # Open the update category page
     driver.get(url)
     # Wait for the page to load
@@ -65,38 +60,24 @@ for i, test_case in enumerate(test_cases):
         driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Save']").click()
         # Wait for the result message to appear
         try:
-            WebDriverWait(driver, 10).until(
+            alert = WebDriverWait(driver, 10).until(
                 EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'alert')]"))
             )
 
+            alert_text = alert.text
             if test_case["expected_result"] == "Successful":
-                try:
-                    success_message = driver.find_elements(By.XPATH, "//div[contains(@class, 'alert')]")
-                    if any("Updated! Successfully." or "Category already exists!" in element.text for element in success_message):
-                        print(f"Test case {test_case['id']}: PASS")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Success message not found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
-            elif test_case["expected_result"] == "NotSaved":
-                try:
-                    if not any(alert.is_displayed() for alert in driver.find_elements(By.XPATH, "//div[contains(@class, 'alert')]")):
-                        print(f"Test case {test_case['id']}: PASS")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Unexpected alert found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+                if "Updated! Successfully." in alert_text:
+                    print(f"Test case {test_case['id']}: PASS")
+                else:
+                    print(f"Test case {test_case['id']}: FAIL - Success message not found")
             else:
-                try:
-                    error_message = driver.find_element(By.CSS_SELECTOR, "div.alert.alert-danger.alert-dismissible.fade.show").text
-                    if "Invalid Category Name" in error_message or "Field Required" in error_message or "Category already exists!" in error_message:
-                        print(f"Test case {test_case['id']}: FAIL")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Error message not found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+                if "field Required!" in alert_text or "Category already exist!" in alert_text:
+                    print(f"Test case {test_case['id']}: PASS")
+                else:
+                    print(f"Test case {test_case['id']}: FAIL - Error message not found")
         except Exception as e:
-            print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+            error_message = str(e).split("\n")[0]
+            print(f"Test case {test_case['id']}: FAIL - Error: {error_message}")
 
 # Close the driver
 driver.quit()

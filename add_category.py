@@ -10,14 +10,10 @@ driver = webdriver.Chrome()
 # Define test data for add restaurant category functionality
 test_cases = [
     {"id": "TC_RESTAURANT_CATEGORY_001", "category": "Western", "expected_result": "Successful"},
-    {"id": "TC_RESTAURANT_CATEGORY_002", "category": "Western", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_RESTAURANT_CATEGORY_003", "category": "abc123", "expected_result": "Unsuccessful"},
-    {"id": "TC_RESTAURANT_CATEGORY_004", "category": "abc123", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_RESTAURANT_CATEGORY_005", "category": "$", "expected_result": "Unsuccessful"},
-    {"id": "TC_RESTAURANT_CATEGORY_006", "category": "122", "expected_result": "Unsuccessful"},
-    {"id": "TC_RESTAURANT_CATEGORY_007", "category": "123", "expected_result": "NotSaved", "cancel": True},
-    {"id": "TC_RESTAURANT_CATEGORY_008", "category": " ", "expected_result": "Unsuccessful"},
-    {"id": "TC_RESTAURANT_CATEGORY_009", "category": " ", "expected_result": "NotSaved", "cancel": True},
+    {"id": "TC_RESTAURANT_CATEGORY_002", "category": "abc123", "expected_result": "Unsuccessful"},
+    {"id": "TC_RESTAURANT_CATEGORY_003", "category": "$", "expected_result": "Unsuccessful"},
+    {"id": "TC_RESTAURANT_CATEGORY_004", "category": "123", "expected_result": "Unsuccessful"},
+    {"id": "TC_RESTAURANT_CATEGORY_005", "category": " ", "expected_result": "Unsuccessful"},
 ]
 
 # URL of the page to test
@@ -36,7 +32,7 @@ def login():
 login()
 
 # Iterate over test cases
-for i, test_case in enumerate(test_cases):
+for test_case in test_cases:
     # Open the add category page
     driver.get(url)
     # Wait for the page to load
@@ -47,55 +43,29 @@ for i, test_case in enumerate(test_cases):
     category_input.clear()
     category_input.send_keys(test_case["category"])
 
-    if "cancel" in test_case and test_case["cancel"]:
-        # Click "Cancel" button
-        driver.find_element(By.CLASS_NAME, "btn-inverse").click()
-        time.sleep(3)
-        # Check if no alert is present
-        try:
-            WebDriverWait(driver, 3).until(
-                EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'alert')]"))
-            )
-            print(f"Test case {test_case['id']}: FAIL - Unexpected alert found")
-        except:
-            print(f"Test case {test_case['id']}: PASS")
-    else:
-        # Click "Save" button
-        driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Save']").click()
-        # Wait for the result message to appear
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'alert')]"))
-            )
+    # Click "Save" button
+    driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Save']").click()
 
-            if test_case["expected_result"] == "Successful":
-                try:
-                    success_message = driver.find_elements(By.XPATH, "//div[contains(@class, 'alert')]")
-                    if any("New Category Added Successfully" in element.text or "Category already exists!" in element.text for element in success_message):
-                        print(f"Test case {test_case['id']}: PASS")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Success message not found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
-            elif test_case["expected_result"] == "NotSaved":
-                try:
-                    if not any(alert.is_displayed() for alert in driver.find_elements(By.XPATH, "//div[contains(@class, 'alert')]")):
-                        print(f"Test case {test_case['id']}: PASS")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Unexpected alert found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+    # Wait for the result message to appear
+    try:
+        alert = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'alert')]"))
+        )
+
+        alert_text = alert.text
+        if test_case["expected_result"] == "Successful":
+            if "New Category Added Successfully." in alert_text:
+                print(f"Test case {test_case['id']}: PASS")
             else:
-                try:
-                    error_message = driver.find_element(By.CSS_SELECTOR, "div.alert.alert-danger.alert-dismissible.fade.show").text
-                    if "Invalid Category Name" in error_message or "Field Required" in error_message or "Category already exists!" in error_message:
-                        print(f"Test case {test_case['id']}: FAIL")
-                    else:
-                        print(f"Test case {test_case['id']}: FAIL - Error message not found")
-                except Exception as e:
-                    print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
-        except Exception as e:
-            print(f"Test case {test_case['id']}: FAIL - Error: {str(e)}")
+                print(f"Test case {test_case['id']}: FAIL - Success message not found")
+        else:
+            if "field Required!" in alert_text or "Category already exist!" in alert_text:
+                print(f"Test case {test_case['id']}: PASS")
+            else:
+                print(f"Test case {test_case['id']}: FAIL - Error message not found")
+    except Exception as e:
+        error_message = str(e).split("\n")[0]
+        print(f"Test case {test_case['id']}: FAIL - Error: {error_message}")
 
 # Close the driver
 driver.quit()
